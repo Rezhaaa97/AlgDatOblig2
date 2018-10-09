@@ -57,11 +57,11 @@ public class Main {
         /**
          * Oppgave 3
          */
-        Character[] c = {'A','B','C','D','E','F','G','H','I','J',};
+        Character[] c = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',};
         DobbeltLenketListe<Character> liste = new DobbeltLenketListe<>(c);
-        System.out.println(liste.subliste(3,8)); // [D, E, F, G, H]
-        System.out.println(liste.subliste(5,5)); // []
-        System.out.println(liste.subliste(8,liste.antall())); // [I, J]
+        System.out.println(liste.subliste(3, 8)); // [D, E, F, G, H]
+        System.out.println(liste.subliste(5, 5)); // []
+        System.out.println(liste.subliste(8, liste.antall())); // [I, J]
         //System.out.println(liste.subliste(0,11)); // skal kaste unntak
 
         /**
@@ -83,7 +83,7 @@ public class Main {
         /**
          * Oppgave 8
          */
-        String[] navn = {"Lars","Anders","Bodil","Kari","Per","Berit"};
+        String[] navn = {"Lars", "Anders", "Bodil", "Kari", "Per", "Berit"};
         Liste<String> liste8 = new DobbeltLenketListe<>(navn);
         liste.forEach(ss -> System.out.print(ss + " "));
         System.out.println();
@@ -95,10 +95,11 @@ public class Main {
         /**
          * Oppgave 9
          */
+        /*
         System.out.println();
         DobbeltLenketListe<String> liste9 =
                 new DobbeltLenketListe<>(
-                        new String[]{"Birger","Lars","Anders","Bodil","Kari","Per","Berit"});
+                        new String[]{"Birger", "Lars", "Anders", "Bodil", "Kari", "Per", "Berit"});
         //new String[]{"Birger", "Lars", "Bodil"});
         liste9.fjernHvis(name -> name.charAt(0) == 'B'); // fjerner navn som starter med B
         System.out.println(liste9 + "\n" + liste9.omvendtString());
@@ -109,6 +110,7 @@ public class Main {
         /**
          * Oppgave 10
          */
+        /*
         System.out.println("Oppgave 10\n");
         String[] navn10 = {"Lars","Anders","Bodil","Kari","Per","Berit"};
         Liste<String> liste11 = new DobbeltLenketListe<>(navn10);
@@ -145,4 +147,7 @@ public class Main {
             liste.oppdater(i, tempA);
         }
     }
+    */
+
     }
+}

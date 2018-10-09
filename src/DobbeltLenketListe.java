@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
+
     private static final class Node<T> {
         private T verdi;
         private Node<T> forrige, neste;
@@ -43,13 +44,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private static void fratilKontroll(int antall, int fra, int til) {
         if (fra < 0)
             throw new IndexOutOfBoundsException
-                    ("fra(" + fra + ") er negativ!");
+                    ("fra(" + fra + ") er negativ !");
         if (til > antall)
             throw new IndexOutOfBoundsException
                     ("til(" + til + ") > antall(" + antall + ")");
         if (fra > til)
             throw new IllegalArgumentException
-                    ("fra(" + fra + ") > til(" + til + ") - illegalt intervall!");
+                    ("fra(" + fra + ") > til(" + til + ") - ulovlig intervall!");
     }
     public DobbeltLenketListe() {
         hode = hale = null;
@@ -58,7 +59,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
     public DobbeltLenketListe(T[] a) {
         this();
-        Objects.requireNonNull(a, "Ikkje Lov! -->  Tabellen a er null!");
+        Objects.requireNonNull(a, "Tabellen a er null!");
         if (a.length == 0) return;
         Node<T> temp = hode;
         for (int i = 0; i < a.length; i++) {
@@ -75,7 +76,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             temp = newNode;
             antall++;
         }
-        //if (antall == 0) return;
 
     }
     public Liste<T> subliste(int fra, int til) {
@@ -98,7 +98,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
     @Override
     public boolean leggInn(T verdi) {
-        Objects.requireNonNull(verdi, "Null-verdi");
+        Objects.requireNonNull(verdi, "Null verdi");
         if (tom()) {
             hode = hale = new Node<>(verdi, null,null);
         } else {
@@ -141,9 +141,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public int indeksTil(T verdi) {
         if (verdi == null) return -1;
         Node<T> p = hode;
-        // Starter fra hodet og gaar gjennom lista fram til verdien er funnet
-        // Saa fort den er funnet, blir den returnert, dvs. foerste fra venstre
-        // Kan ta tid om lista er lang
+
         for (int i = 0; i < antall; i++) {
             if (p.verdi.equals(verdi))
                 return i;
@@ -153,7 +151,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        Objects.requireNonNull(nyverdi, "Kan ikke ha nullverdi");
+        Objects.requireNonNull(nyverdi, "Kan ikke ha nullverdi !");
         indeksKontroll(indeks, false);
         Node<T> tmp = finnNode(indeks);
         T tmpVerdi = tmp.verdi;
@@ -217,8 +215,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
     @Override
     public void nullstill() {
-        // Metode 1 - Denne er noe kjappere, rundt 1/3 kjappere mot Metode 2
-        // Ved en tabell på 5 mill. tall brukte metode 1 31ms, og metode 2 48ms.
         Node<T> p = hode, q;
         while (p != null) {
             q = p.neste;
@@ -228,13 +224,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             p = q;
         }
         hode = hale = null;
-        endringer++;    // nullstilling er en endring
-        antall = 0;           // antall lik 0 i en tom liste
-        // Metode 2
-        // while (antall > 0) fjern(0);
+        endringer++;
+        antall = 0;
     }
-    // Bruker av og til over 20ms uavhengig av om man bruker metoden under, som er like metoden toString()
-    // fra EnkeltLenketListe, eller metoden omvendtString() under, som bruker StringJoiner
+
     public String toString(){
         StringBuilder s = new StringBuilder();
         s.append('[');
@@ -260,11 +253,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
         return joiner.toString();
     }
-    // Metoden er ikke spesielt effektiv - bruker bobblesortering
-    // Ved testing bruker den rundt 6 ganger lengre tid paa en tilfeldig permutasjon
-    // naar vi dobbler mengden tall. Dvs. at den er gjennomsnittlig av noe imellom
-    // kvadratisk og kubisk orden ala n^3
-    // Man kunne ha byttet om paa nodene istedet for aa kjoere oppdater metoden
+
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
         for (int n = liste.antall(); n > 1; n--) {
             for (int i = 1; i < n; i++) {
@@ -290,9 +279,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         private boolean fjernOK;
         private int iteratorendringer;
         private DobbeltLenketListeIterator() {
-            denne = hode;     // denne starter på den første i listen
-            fjernOK = false;  // blir sann når next() kalles
-            iteratorendringer = endringer;  // teller endringer
+            denne = hode;
+            fjernOK = false;
+            iteratorendringer = endringer;
         }
         private DobbeltLenketListeIterator(int indeks) {
             this();
@@ -301,7 +290,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         @Override
         public boolean hasNext()
         {
-            return denne != null;  // denne koden skal ikke endres!
+            return denne != null;
         }
         @Override
         public T next() {
@@ -318,23 +307,23 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
         @Override
         public void remove() {
-            if (!fjernOK) throw new IllegalStateException("Ikke tillatt aa kalle metoden / fjernOK == false");
+            if (!fjernOK) throw new IllegalStateException("Ikke tillatt å kalle metoden / fjernOK == false");
             if (endringer != iteratorendringer)
                 throw new ConcurrentModificationException("Listen er endret / endringer != iteratorendringer");
             fjernOK = false;
-            if (antall == 1) {  // Dersom det kun er en Node
+            if (antall == 1) {
                 hale = null;
                 hode.neste = null;
-            } else if (denne == null) { //Bakerste Node skal fjernes
+            } else if (denne == null) {
                 Node<T> tempHale = hale;
                 hale = hale.forrige;
                 hale.neste = null;
                 tempHale.forrige = null;
-            } else if (denne.forrige == hode) { //Foerste Node skal fjernes
+            } else if (denne.forrige == hode) {
                 hode = hode.neste;
                 hode.forrige = null;
-            } else { // Dersom Noder i midten skal fjernes
-                Node<T> temp = denne.forrige.forrige; // denne.forrige skal fjernes
+            } else {
+                Node<T> temp = denne.forrige.forrige;
                 temp.neste = denne;
                 denne.forrige = temp;
             }
